@@ -84,11 +84,11 @@ func (lim *Limiter) Burst() int {
 func (lim *Limiter) Remaining() int {
 	lim.mu.Lock()
 	defer lim.mu.Unlock()
-	lim.advance(time.Now())
-	if lim.tokens < 0 {
+	_, _, tokens := lim.advance(time.Now())
+	if tokens < 0 {
 		return 0
 	}
-	return int(lim.tokens)
+	return int(tokens)
 }
 
 // NewLimiter returns a new Limiter that allows events up to rate r and permits
