@@ -428,6 +428,9 @@ func TestWaitSimple(t *testing.T) {
 func TestRemainingSimple(t *testing.T) {
 	const rateLimit = 10
 	rateLimiter := NewLimiter(Every(time.Hour), rateLimit)
+	if rateLimiter.Remaining() != rateLimit {
+		t.Errorf("expected initial token count to be equal to rate limit")
+	}
 	for i := 0; i < rateLimit+2; i++ {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*50)
 		defer cancel()
